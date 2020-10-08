@@ -1,14 +1,14 @@
 game_set_up <- function(){
-        print("Inserte el numero de filas y columnas del tablero, en ese orden")
-        dim <- scan(nmax = 2)
+        print("Inserte el numero de filas y columnas del tablero, en ese orden separado por comas")
+        dim <- scan(nmax = 2, what = vector(mode = "numeric", length = 2), sep = ",")
         grid_gen_0 <- matrix(data = FALSE, ncol = dim[2], nrow = dim[1])
         print(grid_gen_0)
         
         print("Ahora, seleccione el número de celulas vivas que quiere introducir")
         cells <- scan(nmax = 1)
-        print("A conticuacion seleccione la posicion de cada una introduciendo filas y columnas en ese orden en lineas diferentes")
+        print("A conticuacion seleccione la posicion de cada una introduciendo filas y columnas en ese orden separadas por comas")
         for(i in 1:cells){
-                new_cell <- scan(nmax = 2)
+                new_cell <- scan(nmax = 2, what = vector(mode = "numeric", length = 2), sep = ",")
                 grid_gen_0[new_cell[2],new_cell[1]] = TRUE
         }
         print("Generacion 0")
@@ -39,4 +39,4 @@ game_set_up <- function(){
         print(grid_gen_0)
 }
 game_set_up()
-
+♦
