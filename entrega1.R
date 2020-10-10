@@ -158,25 +158,18 @@ Qué deseas hacer?
                         }
                 }
         }
-}
-game_set_up()
-
-
-
-
-
-
-reproduction_rule <- function(){
-        for (i in 1:dim[1]) {
-                for (l in 1:dim[2]) {
+        grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
+        reproduction_rule <- function(){
+        for (i in 1:filas) {
+                for (l in 1:columnas) {
                         if(grid_gen_0[i, l]==FALSE){
                                 parents <- 0
-                                for(i2 in max(1,(i-1)):min(dim[1],(i+1))){
-                                        for(l2 in max(1,(l-1)):min(dim[2],(l+1))){
+                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 if(grid_gen_0[i2,l2]==TRUE){
                                                         parents <- parents+1
                                                         if(parents==3){
-                                                                grid_gen_0[i,l] <- TRUE
+                                                                grid_gen_1[i,l] <- TRUE
                                                                 
                                                         }
                                                 }
@@ -187,7 +180,16 @@ reproduction_rule <- function(){
         }
         
 }
+}
+game_set_up()
+
+
+
+
+
+
+
 reproduction_rule()
 print("Generacion 1")
-print(grid_gen_0)
+print(grid_gen_1)
 
