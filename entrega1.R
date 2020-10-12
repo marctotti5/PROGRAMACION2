@@ -327,6 +327,7 @@ Por favor inserte el número (no ponga manual o automático) ")
         grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
+        # Regla de reproducción
         for (i in 1:filas) {
                 for (l in 1:columnas) {
                         if(grid_gen_0[i, l] == ""){
