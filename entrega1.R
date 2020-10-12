@@ -331,18 +331,25 @@ Por favor inserte el número (no ponga manual o automático) ")
         for (i in 1:filas) {
                 for (l in 1:columnas) {
                         if(grid_gen_0[i, l] == ""){
-                                parents <- 0
+                                neighbour <- 0
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 if(grid_gen_0[i2,l2] == "X"){
-                                                        parents <- parents + 1
-                                                        if(parents == 3){
+                                                        neighbour <- neighbour + 1
+                                                        if(neighbour == 3){
                                                                 grid_gen_1[i, l] <- "X"
                                                                 
                                                         }
                                                 }
                                         }       
                                 }
+                                #Regla de supervivencia
+                        } else if(grid_gen_0[i2,l2] == "X"){
+                                neighbour <- neighbour + 1
+                                #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 menos
+                                if(neighbour == 1 | neighbour == 2){
+                                        grid_gen_1[i, l] <- "X"
+                                # Regla de Soledad
                         }
                 }
         }
@@ -350,33 +357,9 @@ Por favor inserte el número (no ponga manual o automático) ")
         edit(grid_gen_1)
 
 
+        }       
 }
 game_set_up()
-}
-
-
-
-
-reproduction_rule <- function(){
-        for (i in 1:filas) {
-                for (l in 1:columnas) {
-                        if(grid_gen_0[i, l] == FALSE){
-                                parents <- 0
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                                if(grid_gen_0[i2,l2]==TRUE){
-                                                        parents <- parents+1
-                                                        if(parents==3){
-                                                                grid_gen_1[i,l] <- TRUE
-                                                                
-                                                        }
-                                                }
-                                        }       
-                                }
-                        }
-                }
-        }
-        
 }
 
 
