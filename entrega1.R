@@ -249,7 +249,7 @@ Por favor inserte el número (no ponga manual o automático) ")
                                                         edit(grid_gen_0)
                                                 } else {
                                                         edit(grid_gen_0)
-                                                        print("Esta célula ya está viva")
+                                                        print("Esta célula ya está muerta")
                                                 }
                                         }
                                         
@@ -325,12 +325,33 @@ Por favor inserte el número (no ponga manual o automático) ")
                 }
         }
         grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
+        colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
+        
+        for (i in 1:filas) {
+                for (l in 1:columnas) {
+                        if(grid_gen_0[i, l] == ""){
+                                parents <- 0
+                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                                if(grid_gen_0[i2,l2] == "X"){
+                                                        parents <- parents + 1
+                                                        if(parents == 3){
+                                                                grid_gen_1[i, l] <- "X"
+                                                                
+                                                        }
+                                                }
+                                        }       
+                                }
+                        }
+                }
+        }
+        
+        edit(grid_gen_1)
 
 
 }
 game_set_up()
 }
-
 
 
 
