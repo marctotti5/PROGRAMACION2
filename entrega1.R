@@ -327,13 +327,13 @@ Por favor inserte el número (no ponga manual o automático) ")
         grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
-        # Regla de reproducción
         for (i in 1:filas) {
                 for (l in 1:columnas) {
                         if(grid_gen_0[i, l] == ""){
                                 neighbour <- 0
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                                # Regla de reproducción
                                                 if(grid_gen_0[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         if(neighbour == 3){
@@ -343,24 +343,40 @@ Por favor inserte el número (no ponga manual o automático) ")
                                                 }
                                         }       
                                 }
-                                #Regla de supervivencia
-                        } else if(grid_gen_0[i2,l2] == "X"){
-                                neighbour <- neighbour + 1
-                                #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 menos
-                                if(neighbour == 1 | neighbour == 2){
-                                        grid_gen_1[i, l] <- "X"
-                                # Regla de Soledad
+                        } else if (grid_gen_0[i,l] == "X"){
+                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                                if(grid_gen_0[i2,l2] == "X"){
+                                                        neighbour <- neighbour + 1
+                                                        #Regla de supervivencia
+                                                        #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
+                                                        if(neighbour == 2+1 | neighbour == 3+1 ){
+                                                                grid_gen_1[i, l] <- "X"
+                                                        }
+                                                        #Regla de soledad
+                                                        #Mismo mecanismo que la anterior
+                                                        if(neighbour == 0+1 | neighbour == 1+1 ){
+                                                                grid_gen_1[i, l] <- ""
+                                                        }
+                                                        #Regla de superpoblación
+                                                        #Mismo mecanismo que la anterior
+                                                        if(neighbour >= 4+1){
+                                                                grid_gen_1[i, l] <- ""  
+                                                        }
+                                                } 
+                                                        
+                                        }
+                                                        
+                                }
                         }
-                }
-        }
-        
-        edit(grid_gen_1)
-
-
-        }       
+                } 
+        } 
+edit(grid_gen_1)
 }
+
 game_set_up()
-}
+}♠
+
 
 
 
