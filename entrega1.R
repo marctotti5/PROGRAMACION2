@@ -338,43 +338,41 @@ Ahora, seleccione el número de células vivas que quiere introducir por favor "
         grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
-        neighbour <- 0
-        
         for (i in 1:filas) {
-                for (l in 1:columnas) {
-                        if(grid_gen_0[i, l] == ""){
+                for (j in 1:columnas) {
+                        if(grid_gen_0[i, j] == ""){
                                 neighbour <- 0
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                for(k in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l in max(1,(j-1)):min(columnas,(j+1))){
                                                 # Regla de reproducción
-                                                if(grid_gen_0[i2,l2] == "X"){
+                                                if(grid_gen_0[k,l] == "X"){
                                                         neighbour <- neighbour + 1
                                                         if(neighbour == 3){
-                                                                grid_gen_1[i, l] <- "X"
+                                                                grid_gen_1[i, j] <- "X"
                                                                 
                                                         }
                                                 }
                                         }       
                                 }
                         } else if (grid_gen_0[i,l] == "X"){
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                                if(grid_gen_0[i2,l2] == "X"){
+                                for(k in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l in max(1,(j-1)):min(columnas,(j+1))){
+                                                if(grid_gen_0[k,l] == "X"){
                                                         neighbour <- neighbour + 1
                                                         #Regla de supervivencia
                                                         #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
                                                         if(neighbour == 2+1 | neighbour == 3+1 ){
-                                                                grid_gen_1[i, l] <- "X"
+                                                                grid_gen_1[i, j] <- "X"
                                                         }
                                                         #Regla de soledad
                                                         #Mismo mecanismo que la anterior
                                                         if(neighbour == 0+1 | neighbour == 1+1 ){
-                                                                grid_gen_1[i, l] <- ""
+                                                                grid_gen_1[i, j] <- ""
                                                         }
                                                         #Regla de superpoblación
                                                         #Mismo mecanismo que la anterior
                                                         if(neighbour >= 4+1){
-                                                                grid_gen_1[i, l] <- ""  
+                                                                grid_gen_1[i, j] <- ""  
                                                         }
                                                 } 
                                                 
@@ -383,9 +381,10 @@ Ahora, seleccione el número de células vivas que quiere introducir por favor "
                                 }
                         }
                 } 
-        } 
+        }      
         
-
+        
+        
 edit(grid_gen_1)
 }
 
@@ -397,7 +396,14 @@ game_set_up()
 
 
 
-reproduction <- for (i in 1:filas) {
+
+
+
+
+reproduction <- 
+neighbour <- 0
+
+for (i in 1:filas) {
         for (l in 1:columnas) {
                 if(grid_gen_0[i, l] == ""){
                         neighbour <- 0
@@ -440,10 +446,13 @@ reproduction <- for (i in 1:filas) {
                         }
                 }
         } 
-} 
+}      
 
 
-regla_marc <-         for(i in 1:nrow(grid_gen_0)){
+
+regla_marc <-         
+        
+for(i in 1:nrow(grid_gen_0)){
         for(j in 1:ncol(grid_gen_0)){
                 for(k in (max(1, (j - 1))):(min((j + 1), columnas))){
                         for(l in (max(1, (i - 1))):(min((i + 1), filas))){
