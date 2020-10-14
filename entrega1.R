@@ -335,44 +335,55 @@ Ahora, seleccione el número de células vivas que quiere introducir por favor "
                         }
                 }
         }
+        grid_gen_0 <<- grid_gen_0
+}
+
+game_set_up()
+
+
+reglas <- function(){
+        edit(grid_gen_0)
+        filas <- nrow(grid_gen_0)
+        columnas <- ncol(grid_gen_0)
         grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
         for (i in 1:filas) {
-                for (j in 1:columnas) {
-                        if(grid_gen_0[i, j] == ""){
+                for (l in 1:columnas) {
+                        if(grid_gen_0[i, l] == ""){
                                 neighbour <- 0
-                                for(k in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l in max(1,(j-1)):min(columnas,(j+1))){
+                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 # Regla de reproducción
-                                                if(grid_gen_0[k,l] == "X"){
+                                                if(grid_gen_0[i2, l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         if(neighbour == 3){
-                                                                grid_gen_1[i, j] <- "X"
+                                                                grid_gen_1[i, l] <- "X"
                                                                 
                                                         }
                                                 }
                                         }       
                                 }
                         } else if (grid_gen_0[i,l] == "X"){
-                                for(k in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l in max(1,(j-1)):min(columnas,(j+1))){
-                                                if(grid_gen_0[k,l] == "X"){
+                                neighbour <- -1
+                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                                if(grid_gen_0[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         #Regla de supervivencia
                                                         #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
-                                                        if(neighbour == 2+1 | neighbour == 3+1 ){
-                                                                grid_gen_1[i, j] <- "X"
+                                                        if(neighbour == 2 | neighbour == 3){
+                                                                grid_gen_1[i, l] <- grid_gen_0[i ,l]
                                                         }
                                                         #Regla de soledad
                                                         #Mismo mecanismo que la anterior
-                                                        if(neighbour == 0+1 | neighbour == 1+1 ){
-                                                                grid_gen_1[i, j] <- ""
+                                                        if(neighbour == 0 | neighbour == 1){
+                                                                grid_gen_1[i, l] <- ""
                                                         }
                                                         #Regla de superpoblación
                                                         #Mismo mecanismo que la anterior
-                                                        if(neighbour >= 4+1){
-                                                                grid_gen_1[i, j] <- ""  
+                                                        if(neighbour >= 4){
+                                                                grid_gen_1[i, l] <- ""  
                                                         }
                                                 } 
                                                 
@@ -381,14 +392,10 @@ Ahora, seleccione el número de células vivas que quiere introducir por favor "
                                 }
                         }
                 } 
-        }      
-        
-        
-        
-edit(grid_gen_1)
+        }
+        edit(grid_gen_1)
 }
-
-game_set_up()
+reglas()
 }
 
 
@@ -396,12 +403,8 @@ game_set_up()
 
 
 
+reproduction_jorge <- 
 
-
-
-
-reproduction <- 
-neighbour <- 0
 
 for (i in 1:filas) {
         for (l in 1:columnas) {
@@ -420,23 +423,24 @@ for (i in 1:filas) {
                                 }       
                         }
                 } else if (grid_gen_0[i,l] == "X"){
+                        neighbour <- -1
                         for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                 for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                         if(grid_gen_0[i2,l2] == "X"){
                                                 neighbour <- neighbour + 1
                                                 #Regla de supervivencia
                                                 #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
-                                                if(neighbour == 2+1 | neighbour == 3+1 ){
-                                                        grid_gen_1[i, l] <- "X"
+                                                if(neighbour == 2 | neighbour == 3){
+                                                        grid_gen_1[i, l] <- grid_gen_0[i , j]
                                                 }
                                                 #Regla de soledad
                                                 #Mismo mecanismo que la anterior
-                                                if(neighbour == 0+1 | neighbour == 1+1 ){
+                                                if(neighbour == 0 | neighbour == 1){
                                                         grid_gen_1[i, l] <- ""
                                                 }
                                                 #Regla de superpoblación
                                                 #Mismo mecanismo que la anterior
-                                                if(neighbour >= 4+1){
+                                                if(neighbour >= 4){
                                                         grid_gen_1[i, l] <- ""  
                                                 }
                                         } 
@@ -451,38 +455,40 @@ for (i in 1:filas) {
 
 
 regla_marc <-         
-        
-for(i in 1:nrow(grid_gen_0)){
-        for(j in 1:ncol(grid_gen_0)){
-                for(k in (max(1, (j - 1))):(min((j + 1), columnas))){
-                        for(l in (max(1, (i - 1))):(min((i + 1), filas))){
-                                if(grid_gen_0[i, j] == ""){
-                                        if(grid_gen_0[l, k] == "X"){
-                                                
-                                                # Regla de reproducción
-                                                neighbour <- neighbour + 1
-                                                if(neighbour == 3){
-                                                        grid_gen_1[i, j] == "X"
-                                                } 
-                                        }
-                                } else if(grid_gen_0[i, j] == "X"){
-                                        if(grid_gen_0[l, k] == "X"){
+
+        for(i in 1:nrow(grid_gen_0)){
+                neighbour <- 0
+                for(j in 1:ncol(grid_gen_0)){
+                        for(k in (max(1, (j - 1))):(min((j + 1), columnas))){
+                                for(l in (max(1, (i - 1))):(min((i + 1), filas))){
+                                        if(grid_gen_0[i, j] == ""){
                                                 neighbour <- 0
-                                                neighbour <- neighbour + 1
-                                                
-                                                # Regla de supervivencia
-                                                if(neighbour == 2 | neighbour == 3){
-                                                        grid_gen_1[i, j] <- "X"
-                                                        # Regla de soledad: 
-                                                } else if(neighbour == 0 | neighbour == 1){
-                                                        grid_gen_1[i, j] <- ""
-                                                        # Regla de superpoblación
-                                                } else if(neighbour >= 4){
-                                                        grid_gen_1[i, j] <- ""
+                                                if(grid_gen_0[l, k] == "X"){
+                                                        
+                                                        # Regla de reproducción
+                                                        neighbour <- neighbour + 1
+                                                        if(neighbour == 3){
+                                                                grid_gen_1[i, j] == "X"
+                                                        } 
                                                 }
-                                        }
-                                } 
+                                        } else if(grid_gen_0[i, j] == "X"){
+                                                neighbour <- -1
+                                                if(grid_gen_0[l, k] == "X"){
+                                                        neighbour <- neighbour + 1
+                                                        
+                                                        # Regla de supervivencia
+                                                        if(neighbour == 2 | neighbour == 3){
+                                                                grid_gen_1[i, j] <- grid_gen_0[i,j]
+                                                                # Regla de soledad: 
+                                                        } else if(neighbour == 0 | neighbour == 1){
+                                                                grid_gen_1[i, j] <- ""
+                                                                # Regla de superpoblación
+                                                        } else if(neighbour >= 4){
+                                                                grid_gen_1[i, j] <- ""
+                                                        }
+                                                }
+                                        } 
+                                }
                         }
                 }
         }
-}
