@@ -2,42 +2,65 @@
 {
 game_set_up <- function(){
         filas <- readline("Inserte el numero de filas del tablero por favor ")
-        if(grepl("^[0-9]+$", filas) & filas != "0"){
-                entero <- TRUE
+        if(grepl("^[0-9]+$", filas)){
                 filas <- as.integer(filas)
+                entero <- TRUE
+                if(filas > 0){
+                        positivo <- TRUE
+                } else {
+                        positivo <- FALSE
+                }
+                
         } else{
                 entero <- FALSE
         }
         
-        while(entero == FALSE){
+        while(entero == FALSE | positivo == FALSE){
                 print("El valor a introducir debe ser entero positivo")
-                filas <- readline("Vuelva a insertar el número de filas del tablero por favor ")
-                if(grepl("^[0-9]+$", filas) & filas != "0"){
-                        entero <- TRUE
+                filas <- readline("Vuelva a insertar el numero de filas del tablero por favor ")
+                if(grepl("^[0-9]+$", filas)){
                         filas <- as.integer(filas)
+                        entero <- TRUE
+                        if(filas > 0){
+                                positivo <- TRUE
+                        } else {
+                                positivo <- FALSE
+                        }
+                        
                 } else{
-                        # falta especificar el tipo de dato incorrecto que ha metido
                         entero <- FALSE
-                }   
+                }
         }
         
         columnas <- readline("Inserte el numero de columnas del tablero por favor ")
-        if(grepl("^[0-9]+$", columnas) & columnas != "0"){
-                entero <- TRUE
+        if(grepl("^[0-9]+$", columnas)){
                 columnas <- as.integer(columnas)
+                entero <- TRUE
+                if(columnas > 0){
+                        positivo <- TRUE
+                } else {
+                        positivo <- FALSE
+                }
+                
         } else{
                 entero <- FALSE
         }
-        while(entero == FALSE){
+        
+        while(entero == FALSE | positivo == FALSE){
                 print("El valor a introducir debe ser entero positivo")
-                columnas <- readline("Vuelva a insertar el número de columnas del tablero por favor ")
-                if(grepl("^[0-9]+$", columnas) & columnas != "0"){
-                        entero <- TRUE
+                columnas <- readline("Vuelva a insertar el numero de columnas del tablero por favor ")
+                if(grepl("^[0-9]+$", columnas)){
                         columnas <- as.integer(columnas)
+                        entero <- TRUE
+                        if(columnas > 0){
+                                positivo <- TRUE
+                        } else {
+                                positivo <- FALSE
+                        }
+                        
                 } else{
-                        # falta especificar el tipo de dato incorrecto que ha metido
                         entero <- FALSE
-                }   
+                }
         }
         
         grid_gen_0 <- matrix(data = "", nrow = filas, ncol = columnas) 
@@ -117,42 +140,34 @@ readline("Inserte las 2 coordenadas separadas por una coma (la primera coordenad
 IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
                                 coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                 if(length(coordenadas) == 2){
+                                        son_2_coordenadas <- TRUE
                                         if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
+                                                coord_son_numeros_enteros <- TRUE
                                                 coordenadas <- as.integer(coordenadas)
                                                 if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0))){
                                                         if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
-                                                                son_2_coordenadas <- TRUE
-                                                                coord_son_numeros_enteros <- TRUE
                                                                 coord_filas_estan_dentro_dimension <- FALSE
                                                                 coord_columnas_estan_dentro_dimension <- TRUE
                                                         } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))){
-                                                                son_2_coordenadas <- TRUE
-                                                                coord_son_numeros_enteros <- TRUE
                                                                 coord_filas_estan_dentro_dimension <- TRUE
                                                                 coord_columnas_estan_dentro_dimension <- FALSE
                                                         } else if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))) {
-                                                                son_2_coordenadas <- TRUE
-                                                                coord_son_numeros_enteros <- TRUE
                                                                 coord_filas_estan_dentro_dimension <- FALSE
                                                                 coord_columnas_estan_dentro_dimension <- FALSE
                                                         } 
                                                 } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
-                                                        son_2_coordenadas <- TRUE
-                                                        coord_son_numeros_enteros <- TRUE
                                                         coord_filas_estan_dentro_dimension <- TRUE
                                                         coord_columnas_estan_dentro_dimension <- TRUE
                                                 }
                                         } else{
-                                                son_2_coordenadas <- TRUE
                                                 coord_son_numeros_enteros <- FALSE
                                         }
                                 } else if(length(coordenadas) != 2){
+                                        son_2_coordenadas <- FALSE
                                         if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
-                                                coordenadas <- as.integer(coordenadas)
-                                                son_2_coordenadas <- FALSE
                                                 coord_son_numeros_enteros <- TRUE
+                                                coordenadas <- as.integer(coordenadas)
                                         } else{
-                                                son_2_coordenadas <- FALSE
                                                 coord_son_numeros_enteros <- FALSE
                                         }
                                 }
@@ -166,8 +181,8 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma ")
                                         } else if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == TRUE){
                                                 cat("Debe introducir exactamente 2 coordenadas numéricas.\n 
                                         No ha insertado el número exacto de coordenadas pedidas!")
-                                                coordenadas <- readline("Volvamos a intentarlo.
-                                                Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
+coordenadas <- readline("Volvamos a intentarlo.
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == FALSE){
                                                 print("Ha introducido 2 coordenadas pero al menos una de ellas no es un número entero")
 coordenadas <- 
@@ -201,42 +216,34 @@ y la segunda menor o igual al número de columnas")
                                         
                                         coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                         if(length(coordenadas) == 2){
+                                                son_2_coordenadas <- TRUE
                                                 if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
+                                                        coord_son_numeros_enteros <- TRUE
                                                         coordenadas <- as.integer(coordenadas)
                                                         if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0))){
                                                                 if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
-                                                                        son_2_coordenadas <- TRUE
-                                                                        coord_son_numeros_enteros <- TRUE
                                                                         coord_filas_estan_dentro_dimension <- FALSE
                                                                         coord_columnas_estan_dentro_dimension <- TRUE
                                                                 } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))){
-                                                                        son_2_coordenadas <- TRUE
-                                                                        coord_son_numeros_enteros <- TRUE
                                                                         coord_filas_estan_dentro_dimension <- TRUE
                                                                         coord_columnas_estan_dentro_dimension <- FALSE
                                                                 } else if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))) {
-                                                                        son_2_coordenadas <- TRUE
-                                                                        coord_son_numeros_enteros <- TRUE
                                                                         coord_filas_estan_dentro_dimension <- FALSE
                                                                         coord_columnas_estan_dentro_dimension <- FALSE
                                                                 } 
                                                         } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
-                                                                son_2_coordenadas <- TRUE
-                                                                coord_son_numeros_enteros <- TRUE
                                                                 coord_filas_estan_dentro_dimension <- TRUE
                                                                 coord_columnas_estan_dentro_dimension <- TRUE
                                                         }
                                                 } else{
-                                                        son_2_coordenadas <- TRUE
                                                         coord_son_numeros_enteros <- FALSE
                                                 }
                                         } else if(length(coordenadas) != 2){
+                                                son_2_coordenadas <- FALSE
                                                 if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
-                                                        coordenadas <- as.integer(coordenadas)
-                                                        son_2_coordenadas <- FALSE
                                                         coord_son_numeros_enteros <- TRUE
+                                                        coordenadas <- as.integer(coordenadas)
                                                 } else{
-                                                        son_2_coordenadas <- FALSE
                                                         coord_son_numeros_enteros <- FALSE
                                                 }
                                         }
@@ -245,17 +252,17 @@ y la segunda menor o igual al número de columnas")
                                         if(option == 1){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == ""){
                                                         grid_gen_0[coordenadas[1], coordenadas[2]] <- "X"
-                                                        edit(grid_gen_0)
+                                                        View(grid_gen_0)
                                                 } else {
-                                                        edit(grid_gen_0)
+                                                        View(grid_gen_0)
                                                         print("Esta célula ya está viva")
                                                 } 
                                         } else if(option == 2){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == "X"){
                                                         grid_gen_0[coordenadas[1], coordenadas[2]] <- ""
-                                                        edit(grid_gen_0)
+                                                        View(grid_gen_0)
                                                 } else {
-                                                        edit(grid_gen_0)
+                                                        View(grid_gen_0)
                                                         print("Esta célula ya está muerta")
                                                 }
                                         }
@@ -278,12 +285,11 @@ y la segunda menor o igual al número de columnas")
 cells <- 
 readline("Ahora, seleccione el número de células vivas que quiere introducir por favor ")
                 if(grepl("^[0-9]+$", cells)){
+                        entero <- TRUE
                         cells <- as.integer(cells)
                         if(cells > (nrow(grid_gen_0) * ncol(grid_gen_0))){
-                                entero <- TRUE
                                 cells_menor_que_dimension <- FALSE
                         } else {
-                                entero <- TRUE
                                 cells_menor_que_dimension <- TRUE
                         }
                 } else {
@@ -308,12 +314,11 @@ readline("Volvamos a intentarlo:
 Ahora, seleccione el número de células vivas que quiere introducir por favor ")
                         }
                         if(grepl("^[0-9]+$", cells)){
+                                entero <- TRUE
                                 cells <- as.integer(cells)
                                 if(cells > (nrow(grid_gen_0) * ncol(grid_gen_0))){
-                                        entero <- TRUE
                                         cells_menor_que_dimension <- FALSE
                                 } else {
-                                        entero <- TRUE
                                         cells_menor_que_dimension <- TRUE
                                 }
                         } else {
@@ -328,34 +333,32 @@ Ahora, seleccione el número de células vivas que quiere introducir por favor "
                                 for(i in 1:cells){
                                         grid_gen_0[fila_aleatoria[i], columna_aleatoria[i]] <- "X"
                                 }
-                                edit(grid_gen_0)
+                                View(grid_gen_0)
                         } else {
-                                edit(grid_gen_0)
+                                View(grid_gen_0)
                                 print("No ha insertado ninguna célula viva")
                         }
                 }
         }
-        grid_gen_0 <<- grid_gen_0
+        return(grid_gen_0)
 }
 
-game_set_up()
 
-
-reglas <- function(){
-        edit(grid_gen_0)
-        filas <- nrow(grid_gen_0)
-        columnas <- ncol(grid_gen_0)
-        grid_gen_1 <- matrix(data = grid_gen_0, nrow = filas, ncol = columnas)
+crear_tabla_1 <- function(){
+        View(tablero_generacion_0)
+        filas <- nrow(tablero_generacion_0)
+        columnas <- ncol(tablero_generacion_0)
+        grid_gen_1 <- matrix(data = tablero_generacion_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
         for (i in 1:filas) {
                 for (l in 1:columnas) {
-                        if(grid_gen_0[i, l] == ""){
+                        if(tablero_generacion_0[i, l] == ""){
                                 neighbour <- 0
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 # Regla de reproducción
-                                                if(grid_gen_0[i2, l2] == "X"){
+                                                if(tablero_generacion_0[i2, l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         if(neighbour == 3){
                                                                 grid_gen_1[i, l] <- "X"
@@ -364,16 +367,16 @@ reglas <- function(){
                                                 }
                                         }       
                                 }
-                        } else if (grid_gen_0[i,l] == "X"){
+                        } else if (tablero_generacion_0[i,l] == "X"){
                                 neighbour <- -1
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                                if(grid_gen_0[i2,l2] == "X"){
+                                                if(tablero_generacion_0[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         #Regla de supervivencia
                                                         #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
                                                         if(neighbour == 2 | neighbour == 3){
-                                                                grid_gen_1[i, l] <- grid_gen_0[i ,l]
+                                                                grid_gen_1[i, l] <- tablero_generacion_0[i ,l]
                                                         }
                                                         #Regla de soledad
                                                         #Mismo mecanismo que la anterior
@@ -395,62 +398,20 @@ reglas <- function(){
         }
         edit(grid_gen_1)
 }
-reglas()
+tablero_generacion_0 <- game_set_up()
+crear_tabla_1()
+}
+
+# Cuando hacemos la memoria, hay que indicar solo que hace por encima cada función y que entradas tiene y que salidas tiene
+
+for(i in -1:i){
+        print(Fila + i)
+        for(j in -1:j){
+                print(columna + j )
+        }
 }
 
 
-
-
-
-
-reproduction_jorge <- 
-
-
-for (i in 1:filas) {
-        for (l in 1:columnas) {
-                if(grid_gen_0[i, l] == ""){
-                        neighbour <- 0
-                        for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                        # Regla de reproducción
-                                        if(grid_gen_0[i2,l2] == "X"){
-                                                neighbour <- neighbour + 1
-                                                if(neighbour == 3){
-                                                        grid_gen_1[i, l] <- "X"
-                                                        
-                                                }
-                                        }
-                                }       
-                        }
-                } else if (grid_gen_0[i,l] == "X"){
-                        neighbour <- -1
-                        for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                        if(grid_gen_0[i2,l2] == "X"){
-                                                neighbour <- neighbour + 1
-                                                #Regla de supervivencia
-                                                #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
-                                                if(neighbour == 2 | neighbour == 3){
-                                                        grid_gen_1[i, l] <- grid_gen_0[i , j]
-                                                }
-                                                #Regla de soledad
-                                                #Mismo mecanismo que la anterior
-                                                if(neighbour == 0 | neighbour == 1){
-                                                        grid_gen_1[i, l] <- ""
-                                                }
-                                                #Regla de superpoblación
-                                                #Mismo mecanismo que la anterior
-                                                if(neighbour >= 4){
-                                                        grid_gen_1[i, l] <- ""  
-                                                }
-                                        } 
-                                        
-                                }
-                                
-                        }
-                }
-        } 
-}      
 
 
 
