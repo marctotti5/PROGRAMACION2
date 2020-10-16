@@ -1,6 +1,8 @@
 
 {
 game_set_up <- function(){
+        
+        # Inserción del número de filas del tablero
         filas <- readline("Inserte el numero de filas del tablero por favor ")
         if(grepl("^[0-9]+$", filas)){
                 filas <- as.integer(filas)
@@ -14,7 +16,7 @@ game_set_up <- function(){
         } else{
                 entero <- FALSE
         }
-        
+        # Bucle en caso de que el valor introducido no sea entero positivo
         while(entero == FALSE | positivo == FALSE){
                 print("El valor a introducir debe ser entero positivo")
                 filas <- readline("Vuelva a insertar el numero de filas del tablero por favor ")
@@ -32,6 +34,7 @@ game_set_up <- function(){
                 }
         }
         
+        # Inserción del número de columnas del tablero
         columnas <- readline("Inserte el numero de columnas del tablero por favor ")
         if(grepl("^[0-9]+$", columnas)){
                 columnas <- as.integer(columnas)
@@ -46,6 +49,7 @@ game_set_up <- function(){
                 entero <- FALSE
         }
         
+        # Bucle en caso de que el valor introducido no sea entero positivo
         while(entero == FALSE | positivo == FALSE){
                 print("El valor a introducir debe ser entero positivo")
                 columnas <- readline("Vuelva a insertar el numero de columnas del tablero por favor ")
@@ -63,14 +67,15 @@ game_set_up <- function(){
                 }
         }
         
+        # Creación de una matriz vacía con filas y columnas especificadas anteriormente
         grid_gen_0 <- matrix(data = "", nrow = filas, ncol = columnas) 
         colnames(grid_gen_0) <- 1:ncol(grid_gen_0)
         
+        # Seleccionamos el tipo de inserción: 1 para automático, 2 para manual       
 tipo_insercion <- readline("
 ¿Como desea introducir las células vivas?: 
 Escriba 1 para MANUAL
-Escriba 2 para AUTOMÁTICO 
-Por favor inserte el número (no ponga manual o automático) ")
+Escriba 2 para AUTOMÁTICO ")
         
         if(grepl("^[1-2]+$", tipo_insercion)){
                 entre_uno_dos <- TRUE
@@ -79,6 +84,7 @@ Por favor inserte el número (no ponga manual o automático) ")
                 entre_uno_dos <- FALSE
         }
         
+        # Bucle en caso de que el valor introducido no sea 1 o 2
         while(entre_uno_dos == FALSE){
                 
                 print("El valor debe ser 1 o 2")
@@ -86,8 +92,7 @@ tipo_insercion <- readline("
 Vuelva a intentarlo. 
 ¿Como desea introducir las células vivas?: 
 Escriba 1 para MANUAL
-Escriba 2 para AUTOMÁTICO 
-Por favor inserte el número (no ponga manual o automático) ")
+Escriba 2 para AUTOMÁTICO ")
                 
                 if(grepl("^[1-2]+$", tipo_insercion)){
                         entre_uno_dos <- TRUE
@@ -99,24 +104,34 @@ Por favor inserte el número (no ponga manual o automático) ")
         
         option <- 0
         es_numero <- FALSE
+        
+        # Mecanismo de relleno del tablero de manera manual
         if(tipo_insercion == 1){
+                
+                # Bucle que pide por teclado la opción que desea el usuario 
+                # mientras dicha opción sea distinta a 3 (que equivale a Terminar la creación del tablero inicial)
+                
                 while(option != 3){
                         son_2_coordenadas <- FALSE
                         coord_son_numeros_enteros <- FALSE
                         coord_filas_estan_dentro_dimension <- FALSE
                         coord_columnas_estan_dentro_dimension <- FALSE
+                        coord_son_positivas <- FALSE
                         
 option <- readline("
 Qué deseas hacer? 
 1: Añadir célula viva
 2: Eliminar célula viva
 3: Terminar")
+                        
                         if(grepl("^[1-3]+$", option)){
                                 es_numero <- TRUE
                                 option <- as.integer(option)
                         } else {
                                 es_numero <- FALSE
                         }
+
+                        # Bucle que se repite mientras la opción introducida no sea correcta
                         while(es_numero == FALSE){
                                 print("El valor debe ser 1, 2 o 3")
 option <- readline("
@@ -133,10 +148,12 @@ Qué deseas hacer?
                                 }
                         }
                         
-                        
+                        # Si el usuario quiere insertar o eliminar una célula, deberá especificar sus coordenadas
+                        # El fragmento de código siguiente establece las condiciones que deben cumplir las coordenadas introducidas
+
                         if(option == 1 | option == 2){
 coordenadas <- 
-readline("Inserte las 2 coordenadas separadas por una coma (la primera coordenada se corresponde con el número de fila y la segunda el de columna)
+readline("Inserte las 2 coordenadas separadas por una coma 
 IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
                                 coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                 if(length(coordenadas) == 2){
@@ -172,6 +189,7 @@ IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
                                         }
                                 }
                                 
+                                # Bucle en caso de que las coordenadas no sean correctas
                                 while(son_2_coordenadas == FALSE | coord_son_numeros_enteros == FALSE | coord_filas_estan_dentro_dimension == FALSE | coord_columnas_estan_dentro_dimension == FALSE){
                                         if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == FALSE){
                                                 print("No ha introducido 2 coordenadas, y al menos una de ellas no es un numéro entero")
@@ -209,11 +227,13 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
 Inserte exactamente 2 coordenadas numéricas separadas por una coma.
-Nota: La primera coordenada debe ser menor o igual al número de filas del tablero 
+Nota: La primera coordenada debe ser menor o 
+igual al número de filas del tablero 
 y la segunda menor o igual al número de columnas")
                                                 }
                                         }
                                         
+                                        # En caso de que las coordenadas hayan sido introducidas correctamente
                                         coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                         if(length(coordenadas) == 2){
                                                 son_2_coordenadas <- TRUE
@@ -300,18 +320,18 @@ readline("Ahora, seleccione el número de células vivas que quiere introducir p
                                 print(paste("Debe introducir un número entero de células vivas, y este tiene que ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el número de celdas del tablón)")
 cells <- 
 readline("Volvamos a intentarlo:
-Ahora, seleccione el número de células vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         } else if(entero == FALSE & cells_menor_que_dimension == TRUE){
                                 print(paste("Ha introducido un número no entero de células vivas. El número de células debe ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el número de celdas del tablón)")
 cells <- 
 readline("Volvamos a intentarlo:
-Ahora, seleccione el número de células vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         } else if(entero == TRUE & cells_menor_que_dimension == FALSE){
                                 cat(paste("Ha introducido un número entero de células vivas mayor que "), nrow(grid_gen_0) * ncol(grid_gen_0), 
                                     " (el número de celdas del tablón)", "\nIntroduzca un número de células vivas menor que ", nrow(grid_gen_0) * ncol(grid_gen_0))
 cells <- 
 readline("Volvamos a intentarlo:
-Ahora, seleccione el número de células vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         }
                         if(grepl("^[0-9]+$", cells)){
                                 entero <- TRUE
