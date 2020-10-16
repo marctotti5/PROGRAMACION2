@@ -161,20 +161,36 @@ IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
                                         if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
                                                 coord_son_numeros_enteros <- TRUE
                                                 coordenadas <- as.integer(coordenadas)
-                                                if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0))){
+                                                if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0) | coordenadas[1] == 0 | coordenadas[2] == 0)){
                                                         if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
                                                                 coord_filas_estan_dentro_dimension <- FALSE
                                                                 coord_columnas_estan_dentro_dimension <- TRUE
-                                                        } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))){
+                                                                if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                        coord_son_positivas <- FALSE
+                                                                } else{
+                                                                        coord_son_positivas <- TRUE
+                                                                }
+                                                       } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))){
                                                                 coord_filas_estan_dentro_dimension <- TRUE
                                                                 coord_columnas_estan_dentro_dimension <- FALSE
+                                                                if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                        coord_son_positivas <- FALSE
+                                                                } else {
+                                                                        coord_son_positivas <- TRUE
+                                                                }
                                                         } else if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))) {
                                                                 coord_filas_estan_dentro_dimension <- FALSE
                                                                 coord_columnas_estan_dentro_dimension <- FALSE
+                                                                if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                        coord_son_positivas <- FALSE
+                                                                } else {
+                                                                        coord_son_positivas <- TRUE
+                                                                }
                                                         } 
-                                                } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
+                                                } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0) & (coordenadas[1] != 0) & (coordenadas[2] != 0))){
                                                         coord_filas_estan_dentro_dimension <- TRUE
                                                         coord_columnas_estan_dentro_dimension <- TRUE
+                                                        coord_son_positivas <- TRUE
                                                 }
                                         } else{
                                                 coord_son_numeros_enteros <- FALSE
@@ -190,7 +206,7 @@ IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
                                 }
                                 
                                 # Bucle en caso de que las coordenadas no sean correctas
-                                while(son_2_coordenadas == FALSE | coord_son_numeros_enteros == FALSE | coord_filas_estan_dentro_dimension == FALSE | coord_columnas_estan_dentro_dimension == FALSE){
+                                while(son_2_coordenadas == FALSE | coord_son_numeros_enteros == FALSE | coord_filas_estan_dentro_dimension == FALSE | coord_columnas_estan_dentro_dimension == FALSE | coord_son_positivas == FALSE ){
                                         if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == FALSE){
                                                 print("No ha introducido 2 coordenadas, y al menos una de ellas no es un numéro entero")
 coordenadas <- 
@@ -206,7 +222,7 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
 Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
-                                        } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE){
+                                        } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_son_positivas == TRUE){
                                                 if(coord_filas_estan_dentro_dimension == FALSE & coord_columnas_estan_dentro_dimension == TRUE){
                                                         print("La primera coordenada introducida es mayor que el número de filas del tablero y debe ser menor o igual ")
 coordenadas <- 
@@ -226,11 +242,13 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                                         print("La primera coordenada es mayor que el número de filas del tablero y la segunda mayor al número de columnas. ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numéricas separadas por una coma.
-Nota: La primera coordenada debe ser menor o 
-igual al número de filas del tablero 
-y la segunda menor o igual al número de columnas")
-                                                }
+Inserte exactamente 2 coordenadas numéricas separadas por una coma. ")
+                                                } 
+                                        } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_son_positivas == FALSE){
+                                                print("Al menos una de las coordenadas insertada es cero. ")
+coordenadas <- 
+readline("Volvamos a intentarlo.
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         }
                                         
                                         # En caso de que las coordenadas hayan sido introducidas correctamente
@@ -240,20 +258,37 @@ y la segunda menor o igual al número de columnas")
                                                 if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
                                                         coord_son_numeros_enteros <- TRUE
                                                         coordenadas <- as.integer(coordenadas)
-                                                        if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0))){
+                                                        if((coordenadas[1] > nrow(grid_gen_0)) | (coordenadas[2] > ncol(grid_gen_0) | coordenadas[1] == 0 | coordenadas[2] == 0)){
                                                                 if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
                                                                         coord_filas_estan_dentro_dimension <- FALSE
                                                                         coord_columnas_estan_dentro_dimension <- TRUE
+                                                                        if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                                coord_son_positivas <- FALSE
+                                                                        } else{
+                                                                                coord_son_positivas <- TRUE
+                                                                        }
                                                                 } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))){
                                                                         coord_filas_estan_dentro_dimension <- TRUE
                                                                         coord_columnas_estan_dentro_dimension <- FALSE
+                                                                        if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                                coord_son_positivas <- FALSE
+                                                                        } else{
+                                                                                coord_son_positivas <- TRUE
+                                                                        }
                                                                 } else if((coordenadas[1] > nrow(grid_gen_0)) & (coordenadas[2] > ncol(grid_gen_0))) {
                                                                         coord_filas_estan_dentro_dimension <- FALSE
                                                                         coord_columnas_estan_dentro_dimension <- FALSE
+                                                                        if(coordenadas[1] == 0 | coordenadas[2] == 0){
+                                                                                coord_son_positivas <- FALSE
+                                                                        } else{
+                                                                                coord_son_positivas <- TRUE
+                                                                        }
                                                                 } 
-                                                        } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0))){
+                                                        } else if((coordenadas[1] <= nrow(grid_gen_0)) & (coordenadas[2] <= ncol(grid_gen_0) & (coordenadas[1] != 0) & (coordenadas[2] != 0))){
                                                                 coord_filas_estan_dentro_dimension <- TRUE
                                                                 coord_columnas_estan_dentro_dimension <- TRUE
+                                                                coord_son_positivas <- TRUE
+                                                                
                                                         }
                                                 } else{
                                                         coord_son_numeros_enteros <- FALSE
@@ -315,7 +350,7 @@ readline("Ahora, seleccione el número de células vivas que quiere introducir p
                 } else {
                         entero <- FALSE
                 }
-                while(entero == FALSE | cells_menor_que_dimension == FALSE){
+                while(entero == FALSE | cells_menor_que_dimension == FALSE ){
                         if(entero == FALSE & cells_menor_que_dimension == FALSE){
                                 print(paste("Debe introducir un número entero de células vivas, y este tiene que ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el número de celdas del tablón)")
 cells <- 
