@@ -214,7 +214,7 @@ readline("Volvamos a intentarlo.
 Inserte exactamente 2 coordenadas numéricas separadas por una coma ")
                                         } else if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == TRUE){
                                                 cat("Debe introducir exactamente 2 coordenadas numéricas.\n 
-                                        No ha insertado el número exacto de coordenadas pedidas!")
+No ha insertado el número exacto de coordenadas pedidas!")
 coordenadas <- readline("Volvamos a intentarlo.
 Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == FALSE){
@@ -251,7 +251,6 @@ readline("Volvamos a intentarlo.
 Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         }
                                         
-                                        # En caso de que las coordenadas hayan sido introducidas correctamente
                                         coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                         if(length(coordenadas) == 2){
                                                 son_2_coordenadas <- TRUE
@@ -303,6 +302,8 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                                 }
                                         }
                                 }
+                                
+                                # Una vez los datos introducidos son correctos, procedemos  a las 3 opciones: Añadir célula, eliminar célula o finalizar programa (lo cual generará el tablero de la generación 1)
                                 if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_filas_estan_dentro_dimension == TRUE & coord_columnas_estan_dentro_dimension == TRUE){
                                         if(option == 1){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == ""){
@@ -335,6 +336,8 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
         columna_aleatoria <- 0
         cells_menor_que_dimension <- FALSE
         dimension <- nrow(grid_gen_0) * ncol(grid_gen_0)
+        
+        # Inserción automática de los datos
         
         } else if(tipo_insercion == 2){
 cells <- 
@@ -400,16 +403,22 @@ Seleccione el número de células vivas que quiere introducir por favor ")
 
 
 crear_tabla_1 <- function(){
+        # Imprimimos la tabla de la generación 0 en View
         View(tablero_generacion_0)
         filas <- nrow(tablero_generacion_0)
         columnas <- ncol(tablero_generacion_0)
         grid_gen_1 <- matrix(data = tablero_generacion_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
+        # Usamos estos bucles anidados para generar el tablero de la siguiente generación
         for (i in 1:filas) {
                 for (l in 1:columnas) {
                         if(tablero_generacion_0[i, l] == ""){
+                                # Cuando buscamos células inicializamos la variable neighbour a 0, porque aunque el bucle vaya a pasar por ella, 
+                                # va a detectar que no esta viva y no la va a contar como su propia vecina
                                 neighbour <- 0
+                                # Iteramos entre el máximo entre 1 y la fila i-1, y el mínimo entre el número de filas y i + 1
+                                # Esto nos permite que nuestro bucle no salga del tablero
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 # Regla de reproducción
@@ -422,7 +431,12 @@ crear_tabla_1 <- function(){
                                                 }
                                         }       
                                 }
+                                
+                        # Buscamos células vivas
                         } else if (tablero_generacion_0[i,l] == "X"){
+                                # En este caso inicializamos los vecinos en -1, porque al estar la célula [i,l] viva, 
+                                # el bucle la contará como vecina de sí misma
+                                # Entonces si inicializamos en -1 compensamos y conseguimos el número real de vecinos a su alrededor
                                 neighbour <- -1
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
@@ -457,54 +471,3 @@ tablero_generacion_0 <- game_set_up()
 crear_tabla_1()
 }
 
-# Cuando hacemos la memoria, hay que indicar solo que hace por encima cada función y que entradas tiene y que salidas tiene
-
-for(i in -1:i){
-        print(Fila + i)
-        for(j in -1:j){
-                print(columna + j )
-        }
-}
-
-
-
-
-
-regla_marc <-         
-
-        for(i in 1:nrow(grid_gen_0)){
-                neighbour <- 0
-                for(j in 1:ncol(grid_gen_0)){
-                        for(k in (max(1, (j - 1))):(min((j + 1), columnas))){
-                                for(l in (max(1, (i - 1))):(min((i + 1), filas))){
-                                        if(grid_gen_0[i, j] == ""){
-                                                neighbour <- 0
-                                                if(grid_gen_0[l, k] == "X"){
-                                                        
-                                                        # Regla de reproducción
-                                                        neighbour <- neighbour + 1
-                                                        if(neighbour == 3){
-                                                                grid_gen_1[i, j] == "X"
-                                                        } 
-                                                }
-                                        } else if(grid_gen_0[i, j] == "X"){
-                                                neighbour <- -1
-                                                if(grid_gen_0[l, k] == "X"){
-                                                        neighbour <- neighbour + 1
-                                                        
-                                                        # Regla de supervivencia
-                                                        if(neighbour == 2 | neighbour == 3){
-                                                                grid_gen_1[i, j] <- grid_gen_0[i,j]
-                                                                # Regla de soledad: 
-                                                        } else if(neighbour == 0 | neighbour == 1){
-                                                                grid_gen_1[i, j] <- ""
-                                                                # Regla de superpoblación
-                                                        } else if(neighbour >= 4){
-                                                                grid_gen_1[i, j] <- ""
-                                                        }
-                                                }
-                                        } 
-                                }
-                        }
-                }
-        }
