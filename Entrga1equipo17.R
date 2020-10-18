@@ -7,6 +7,8 @@ game_set_up <- function(){
         
         # Inserción del número de filas del tablero
         filas <- readline("Inserte el numero de filas del tablero por favor ")
+        entero <- 0
+        positivo <- 0
         if(grepl("^[0-9]+$", filas)){
                 filas <- as.integer(filas)
                 entero <- TRUE
