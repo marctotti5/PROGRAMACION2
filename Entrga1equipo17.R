@@ -476,3 +476,4 @@ tablero_generacion_0 <- game_set_up()
 crear_tabla_1()
 }
 
+# Si quieres volver a jugar, ejecuta el código entero otra vez!
