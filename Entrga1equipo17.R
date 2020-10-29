@@ -1,6 +1,6 @@
 
 
-# Para ejecutar al programa basta con pulsar en Run desde esta linea o posterior.
+# Para ejecutar al programa basta con pulsar en Run desde esta linea o posterior:
 
 {
 game_set_up <- function(){
