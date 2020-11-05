@@ -5,26 +5,11 @@
 {
 game_set_up <- function(){
         
-        # InserciÃ³n del nÃºmero de filas del tablero
-        filas <- readline("Inserte el numero de filas del tablero por favor ")
-        entero <- 0
-        positivo <- 0
-        if(grepl("^[0-9]+$", filas)){
-                filas <- as.integer(filas)
-                entero <- TRUE
-                if(filas > 0){
-                        positivo <- TRUE
-                } else {
-                        positivo <- FALSE
-                }
-                
-        } else{
-                entero <- FALSE
-        }
-        # Bucle en caso de que el valor introducido no sea entero positivo
+        # Bucle para introducir las filas
+        entero <- FALSE
+        positivo <- FALSE
         while(entero == FALSE | positivo == FALSE){
-                print("El valor a introducir debe ser entero positivo")
-                filas <- readline("Vuelva a insertar el numero de filas del tablero por favor ")
+                filas <- readline("Inserte el numero de filas del tablero por favor ")
                 if(grepl("^[0-9]+$", filas)){
                         filas <- as.integer(filas)
                         entero <- TRUE
@@ -32,32 +17,20 @@ game_set_up <- function(){
                                 positivo <- TRUE
                         } else {
                                 positivo <- FALSE
+                                print("El número de filas no puede ser 0")
                         }
                         
                 } else{
                         entero <- FALSE
+                        print("Debe introducir un número entero posiivo")
                 }
         }
         
-        # InserciÃ³n del nÃºmero de columnas del tablero
-        columnas <- readline("Inserte el numero de columnas del tablero por favor ")
-        if(grepl("^[0-9]+$", columnas)){
-                columnas <- as.integer(columnas)
-                entero <- TRUE
-                if(columnas > 0){
-                        positivo <- TRUE
-                } else {
-                        positivo <- FALSE
-                }
-                
-        } else{
-                entero <- FALSE
-        }
-        
-        # Bucle en caso de que el valor introducido no sea entero positivo
+        # Bucle para introducir las columnas
+        entero <- FALSE
+        positivo <- FALSE
         while(entero == FALSE | positivo == FALSE){
-                print("El valor a introducir debe ser entero positivo")
-                columnas <- readline("Vuelva a insertar el numero de columnas del tablero por favor ")
+                columnas <- readline("Inserte el numero de columnas del tablero por favor ")
                 if(grepl("^[0-9]+$", columnas)){
                         columnas <- as.integer(columnas)
                         entero <- TRUE
@@ -65,56 +38,43 @@ game_set_up <- function(){
                                 positivo <- TRUE
                         } else {
                                 positivo <- FALSE
+                                print("El número de columnas no puede ser 0")
                         }
                         
                 } else{
                         entero <- FALSE
+                        print("Debe introducir un número entero posiivo")
                 }
         }
-        
-        # CreaciÃ³n de una matriz vacÃ­a con filas y columnas especificadas anteriormente
+
+        # Creación de una matriz vacía con filas y columnas especificadas anteriormente
         grid_gen_0 <- matrix(data = "", nrow = filas, ncol = columnas) 
         colnames(grid_gen_0) <- 1:ncol(grid_gen_0)
         
-        # Seleccionamos el tipo de inserciÃ³n: 1 para automÃ¡tico, 2 para manual       
-tipo_insercion <- readline("
-Â¿Como desea introducir las cÃ©lulas vivas?: 
-Escriba 1 para MANUAL
-Escriba 2 para AUTOMÃTICO ")
-        
-        if(grepl("^[1-2]+$", tipo_insercion)){
-                entre_uno_dos <- TRUE
-                tipo_insercion <- as.integer(tipo_insercion)
-        } else{
-                entre_uno_dos <- FALSE
-        }
-        
-        # Bucle en caso de que el valor introducido no sea 1 o 2
+        # Seleccionamos el tipo de inserciín: 1 para automático, 2 para manual       
+        entre_uno_dos <- FALSE
         while(entre_uno_dos == FALSE){
-                
-                print("El valor debe ser 1 o 2")
 tipo_insercion <- readline("
-Vuelva a intentarlo. 
-Â¿Como desea introducir las cÃ©lulas vivas?: 
+¿Cómo desea introducir las células vivas?: 
 Escriba 1 para MANUAL
-Escriba 2 para AUTOMÃTICO ")
+Escriba 2 para AUTOMÁTICO ")
                 
                 if(grepl("^[1-2]+$", tipo_insercion)){
                         entre_uno_dos <- TRUE
                         tipo_insercion <- as.integer(tipo_insercion)
                 } else {
                         entre_uno_dos <- FALSE
+                        print("Debe introducir 1 o 2")
                 }
         }
         
         option <- 0
-        es_numero <- FALSE
         
         # Mecanismo de relleno del tablero de manera manual
         if(tipo_insercion == 1){
                 
-                # Bucle que pide por teclado la opciÃ³n que desea el usuario 
-                # mientras dicha opciÃ³n sea distinta a 3 (que equivale a Terminar la creaciÃ³n del tablero inicial)
+                # Bucle que pide por teclado la opción que desea el usuario 
+                # mientras dicha opción sea distinta a 3 (que equivale a Terminar la creación del tablero inicial)
                 
                 while(option != 3){
                         son_2_coordenadas <- FALSE
@@ -122,45 +82,32 @@ Escriba 2 para AUTOMÃTICO ")
                         coord_filas_estan_dentro_dimension <- FALSE
                         coord_columnas_estan_dentro_dimension <- FALSE
                         coord_son_positivas <- FALSE
+                        es_numero <- FALSE
                         
-option <- readline("
-QuÃ© deseas hacer? 
-1: AÃ±adir cÃ©lula viva
-2: Eliminar cÃ©lula viva
-3: Terminar")
-                        
-                        if(grepl("^[1-3]+$", option)){
-                                es_numero <- TRUE
-                                option <- as.integer(option)
-                        } else {
-                                es_numero <- FALSE
-                        }
 
-                        # Bucle que se repite mientras la opciÃ³n introducida no sea correcta
                         while(es_numero == FALSE){
-                                print("El valor debe ser 1, 2 o 3")
 option <- readline("
-Volvamos a intentarlo.
-QuÃ© deseas hacer? 
-1: AÃ±adir cÃ©lula viva
-2: Eliminar cÃ©lula viva
+Qué deseas hacer? 
+1: Añadir célula viva
+2: Eliminar célula viva
 3: Terminar")
                                 if(grepl("^[1-3]+$", option)){
                                         es_numero <- TRUE
                                         option <- as.integer(option)
                                 } else {
                                         es_numero <- FALSE
+                                        print("El valor debe ser 1, 2 o 3")
                                 }
                         }
                         
-                        # Si el usuario quiere insertar o eliminar una cÃ©lula, deberÃ¡ especificar sus coordenadas
-                        # El fragmento de cÃ³digo siguiente establece las condiciones que deben cumplir las coordenadas introducidas
+                        # Si el usuario quiere insertar o eliminar una célula, deberá especificar sus coordenadas
+                        # El fragmento de código siguiente establece las condiciones que deben cumplir las coordenadas introducidas
 
                         if(option == 1 | option == 2){
 coordenadas <- 
 readline("Inserte las 2 coordenadas separadas por una coma 
-IMPORTANTE: Â¡LAS COORDENADAS DEBEN SER NÃšMEROS ENTEROS!  ")
-                                coordenadas <- strsplit(coordenadas, ",")[[1]] # la funciÃ³n strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
+IMPORTANTE: ¡LAS COORDENADAS DEBEN SER NÚMEROS ENTEROS!  ")
+                                coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                 if(length(coordenadas) == 2){
                                         son_2_coordenadas <- TRUE
                                         if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
@@ -213,50 +160,50 @@ IMPORTANTE: Â¡LAS COORDENADAS DEBEN SER NÃšMEROS ENTEROS!  ")
                                 # Bucle en caso de que las coordenadas no sean correctas
                                 while(son_2_coordenadas == FALSE | coord_son_numeros_enteros == FALSE | coord_filas_estan_dentro_dimension == FALSE | coord_columnas_estan_dentro_dimension == FALSE | coord_son_positivas == FALSE ){
                                         if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == FALSE){
-                                                print("No ha introducido 2 coordenadas, y al menos una de ellas no es un numÃ©ro entero")
+                                                print("No ha introducido 2 coordenadas, y al menos una de ellas no es un número entero")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma ")
                                         } else if(son_2_coordenadas == FALSE & coord_son_numeros_enteros == TRUE){
-                                                cat("Debe introducir exactamente 2 coordenadas numÃ©ricas.\n 
-No ha insertado el nÃºmero exacto de coordenadas pedidas!")
+                                                cat("Debe introducir exactamente 2 coordenadas numéricas.\n 
+No ha insertado el número exacto de coordenadas pedidas!")
 coordenadas <- readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == FALSE){
-                                                print("Ha introducido 2 coordenadas pero al menos una de ellas no es un nÃºmero entero")
+                                                print("Ha introducido 2 coordenadas pero al menos una de ellas no es un número entero")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_son_positivas == TRUE){
                                                 if(coord_filas_estan_dentro_dimension == FALSE & coord_columnas_estan_dentro_dimension == TRUE){
-                                                        print("La primera coordenada introducida es mayor que el nÃºmero de filas del tablero y debe ser menor o igual ")
+                                                        print("La primera coordenada introducida es mayor que el número de filas del tablero y debe ser menor o igual ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                                 } else if(coord_filas_estan_dentro_dimension == TRUE & coord_columnas_estan_dentro_dimension == FALSE){
-                                                        print("La segunda coordenada introducida es mayor que el nÃºmero de columnas del tablero y debe ser menor o igual.")
+                                                        print("La segunda coordenada introducida es mayor que el número de columnas del tablero y debe ser menor o igual.")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.   ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.   ")
                                                 } else if(coord_filas_estan_dentro_dimension == FALSE & coord_columnas_estan_dentro_dimension == TRUE){
-                                                        print("La primera coordenada introducida es mayor que el nÃºmero de filas del tablero y debe ser menor o igual. ")
+                                                        print("La primera coordenada introducida es mayor que el número de filas del tablero y debe ser menor o igual. ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                                 } else if(coord_filas_estan_dentro_dimension == FALSE & coord_columnas_estan_dentro_dimension == FALSE){
-                                                        print("La primera coordenada es mayor que el nÃºmero de filas del tablero y la segunda mayor al nÃºmero de columnas. ")
+                                                        print("La primera coordenada es mayor que el número de filas del tablero y la segunda mayor al número de columnas. ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma. ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma. ")
                                                 } 
                                         } else if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_son_positivas == FALSE){
                                                 print("Al menos una de las coordenadas insertada es cero. ")
 coordenadas <- 
 readline("Volvamos a intentarlo.
-Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
+Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         }
                                         
-                                        coordenadas <- strsplit(coordenadas, ",")[[1]] # la funciÃ³n strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
+                                        coordenadas <- strsplit(coordenadas, ",")[[1]] # la función strsplit devuelve una lista de un elemento, por ello seleccionamos el primer y unico vector que contiene la lista
                                         if(length(coordenadas) == 2){
                                                 son_2_coordenadas <- TRUE
                                                 if(all(grepl("^[0-9]+$", coordenadas)) == TRUE){
@@ -308,7 +255,7 @@ Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
                                         }
                                 }
                                 
-                                # Una vez los datos introducidos son correctos, procedemos  a las 3 opciones: AÃ±adir cÃ©lula, eliminar cÃ©lula o finalizar programa (lo cual generarÃ¡ el tablero de la generaciÃ³n 1)
+                                # Una vez los datos introducidos son correctos, procedemos  a las 3 opciones: Añadir célula, eliminar célula o finalizar programa (lo cual generará el tablero de la generación 1)
                                 if(son_2_coordenadas == TRUE & coord_son_numeros_enteros == TRUE & coord_filas_estan_dentro_dimension == TRUE & coord_columnas_estan_dentro_dimension == TRUE){
                                         if(option == 1){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == ""){
@@ -316,7 +263,7 @@ Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
                                                         View(grid_gen_0)
                                                 } else {
                                                         View(grid_gen_0)
-                                                        print("Esta cÃ©lula ya estÃ¡ viva")
+                                                        print("Esta célula ya está viva")
                                                 } 
                                         } else if(option == 2){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == "X"){
@@ -324,7 +271,7 @@ Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
                                                         View(grid_gen_0)
                                                 } else {
                                                         View(grid_gen_0)
-                                                        print("Esta cÃ©lula ya estÃ¡ muerta")
+                                                        print("Esta célula ya está muerta")
                                                 }
                                         }
                                         
@@ -342,11 +289,11 @@ Inserte exactamente 2 coordenadas numÃ©ricas separadas por una coma.  ")
         cells_menor_que_dimension <- FALSE
         dimension <- nrow(grid_gen_0) * ncol(grid_gen_0)
         
-        # InserciÃ³n automÃ¡tica de los datos
+        # Inserción automática de los datos
         
         } else if(tipo_insercion == 2){
 cells <- 
-readline("Ahora, seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
+readline("Ahora, seleccione el número de células vivas que quiere introducir por favor ")
                 if(grepl("^[0-9]+$", cells)){
                         entero <- TRUE
                         cells <- as.integer(cells)
@@ -360,21 +307,21 @@ readline("Ahora, seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir p
                 }
                 while(entero == FALSE | cells_menor_que_dimension == FALSE ){
                         if(entero == FALSE & cells_menor_que_dimension == FALSE){
-                                print(paste("Debe introducir un nÃºmero entero de cÃ©lulas vivas, y este tiene que ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el nÃºmero de celdas del tablÃ³n)")
+                                print(paste("Debe introducir un número entero de células vivas, y este tiene que ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el número de celdas del tablero)")
 cells <- 
 readline("Volvamos a intentarlo:
-Seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         } else if(entero == FALSE & cells_menor_que_dimension == TRUE){
-                                print(paste("Ha introducido un nÃºmero no entero de cÃ©lulas vivas. El nÃºmero de cÃ©lulas debe ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el nÃºmero de celdas del tablÃ³n)")
+                                print(paste("Ha introducido un número no entero de células vivas. El número de células debe ser menor a "), nrow(grid_gen_0) * ncol(grid_gen_0), " (el número de celdas del tablero)")
 cells <- 
 readline("Volvamos a intentarlo:
-Seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         } else if(entero == TRUE & cells_menor_que_dimension == FALSE){
-                                cat(paste("Ha introducido un nÃºmero entero de cÃ©lulas vivas mayor que "), nrow(grid_gen_0) * ncol(grid_gen_0), 
-                                    " (el nÃºmero de celdas del tablÃ³n)", "\nIntroduzca un nÃºmero de cÃ©lulas vivas menor que ", nrow(grid_gen_0) * ncol(grid_gen_0))
+                                cat(paste("Ha introducido un número entero de células vivas mayor que "), nrow(grid_gen_0) * ncol(grid_gen_0), 
+                                    " (el número de celdas del tablero)", "Introduzca un número de células vivas menor que ", nrow(grid_gen_0) * ncol(grid_gen_0))
 cells <- 
 readline("Volvamos a intentarlo:
-Seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
+Seleccione el número de células vivas que quiere introducir por favor ")
                         }
                         if(grepl("^[0-9]+$", cells)){
                                 entero <- TRUE
@@ -399,7 +346,7 @@ Seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
                                 View(grid_gen_0)
                         } else {
                                 View(grid_gen_0)
-                                print("No ha insertado ninguna cÃ©lula viva")
+                                print("No ha insertado ninguna célula viva")
                         }
                 }
         }
@@ -408,25 +355,25 @@ Seleccione el nÃºmero de cÃ©lulas vivas que quiere introducir por favor ")
 
 
 crear_tabla_1 <- function(){
-        # Imprimimos la tabla de la generaciÃ³n 0 en View
+        # Imprimimos la tabla de la generaciónn 0 en View
         View(tablero_generacion_0)
         filas <- nrow(tablero_generacion_0)
         columnas <- ncol(tablero_generacion_0)
         grid_gen_1 <- matrix(data = tablero_generacion_0, nrow = filas, ncol = columnas)
         colnames(grid_gen_1) <- 1:ncol(grid_gen_1)
         
-        # Usamos estos bucles anidados para generar el tablero de la siguiente generaciÃ³n
+        # Usamos estos bucles anidados para generar el tablero de la siguiente generación
         for (i in 1:filas) {
                 for (l in 1:columnas) {
                         if(tablero_generacion_0[i, l] == ""){
-                                # Cuando buscamos cÃ©lulas inicializamos la variable neighbour a 0, porque aunque el bucle vaya a pasar por ella, 
+                                # Cuando buscamos células inicializamos la variable neighbour a 0, porque aunque el bucle vaya a pasar por ella, 
                                 # va a detectar que no esta viva y no la va a contar como su propia vecina
                                 neighbour <- 0
-                                # Iteramos entre el mÃ¡ximo entre 1 y la fila i-1, y el mÃ­nimo entre el nÃºmero de filas y i + 1
+                                # Iteramos entre el máximo entre 1 y la fila i-1, y el mínimo entre el número de filas y i + 1
                                 # Esto nos permite que nuestro bucle no salga del tablero
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
-                                                # Regla de reproducciÃ³n
+                                                # Regla de reproducción
                                                 if(tablero_generacion_0[i2, l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         if(neighbour == 3){
@@ -437,18 +384,18 @@ crear_tabla_1 <- function(){
                                         }       
                                 }
                                 
-                        # Buscamos cÃ©lulas vivas
+                        # Buscamos células vivas
                         } else if (tablero_generacion_0[i,l] == "X"){
-                                # En este caso inicializamos los vecinos en -1, porque al estar la cÃ©lula [i,l] viva, 
-                                # el bucle la contarÃ¡ como vecina de sÃ­ misma
-                                # Entonces si inicializamos en -1 compensamos y conseguimos el nÃºmero real de vecinos a su alrededor
+                                # En este caso inicializamos los vecinos en -1, porque al estar la célula [i,l] viva, 
+                                # el bucle la contará como vecina de sí misma
+                                # Entonces si inicializamos en -1 compensamos y conseguimos el número real de vecinos a su alrededor
                                 neighbour <- -1
                                 for(i2 in max(1,(i-1)):min(filas,(i+1))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 if(tablero_generacion_0[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         #Regla de supervivencia
-                                                        #Como el bucle tambien tiene en cuenta la celula viva que estÃ¡ estudiando necesitamos que sea 1 mas
+                                                        #Como el bucle tambien tiene en cuenta la celula viva que está estudiando necesitamos que sea 1 mas
                                                         if(neighbour == 2 | neighbour == 3){
                                                                 grid_gen_1[i, l] <- tablero_generacion_0[i ,l]
                                                         }
@@ -457,7 +404,7 @@ crear_tabla_1 <- function(){
                                                         if(neighbour == 0 | neighbour == 1){
                                                                 grid_gen_1[i, l] <- ""
                                                         }
-                                                        #Regla de superpoblaciÃ³n
+                                                        #Regla de superpoblación
                                                         #Mismo mecanismo que la anterior
                                                         if(neighbour >= 4){
                                                                 grid_gen_1[i, l] <- ""  
@@ -476,4 +423,4 @@ tablero_generacion_0 <- game_set_up()
 crear_tabla_1()
 }
 
-# Si quieres volver a jugar, ejecuta el cÃ³digo entero otra vez!
+# Si quieres volver a jugar, ejecuta el código entero otra vez!
