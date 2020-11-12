@@ -422,7 +422,26 @@ Seleccione el número de células vivas que quiere introducir por favor ")
 tablero_generacion_inicial <- game_set_up()
 contador_generacion <- 1
 
-crear_tabla_n <- function(){
+#Bucle para que el usuario elija la variante del juego
+entre_uno_dos <- FALSE
+while(entre_uno_dos == FALSE){
+        vecindario <- readline("
+Escoja la variante del juego que quiere usar 
+1- VECINDARIO NORMAL
+2- VECINDARIO EXTENDIDO")
+        
+        if(grepl("^[1-2]+$", vecindario)){
+                entre_uno_dos <- TRUE
+                vecindario <- as.integer(vecindario)
+        } else {
+                entre_uno_dos <- FALSE
+                print("El número a introducir debe ser 1 o 2, Probemos otra vez")
+                       
+        }
+}
+
+crear_tabla_n <- function(vecindario){
+        
         # Imprimimos la tabla de la generación 0 en presentar_tablero
         presentar_tablero(tablero_generacion_inicial)
         filas <- nrow(tablero_generacion_inicial)
@@ -439,7 +458,7 @@ crear_tabla_n <- function(){
                                 neighbour <- 0
                                 # Iteramos entre el máximo entre 1 y la fila i-1, y el mínimo entre el número de filas y i + 1
                                 # Esto nos permite que nuestro bucle no salga del tablero
-                                for(i2 in max(1,(i-2)):min(filas,(i+2))){
+                                for(i2 in max(1,(i-vecindario)):min(filas,(i+vecindario))){
                                         for(l2 in max(1,(l-2)):min(columnas,(l+2))){
                                                 # Regla de reproducción
                                                 if(tablero_generacion_inicial[i2, l2] == "X"){
@@ -458,7 +477,7 @@ crear_tabla_n <- function(){
                                 # el bucle la contará como vecina de sí misma
                                 # Entonces si inicializamos en -1 compensamos y conseguimos el número real de vecinos a su alrededor
                                 neighbour <- -1
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
+                                for(i2 in max(1,(i-vecindario)):min(filas,(i+vecindario))){
                                         for(l2 in max(1,(l-1)):min(columnas,(l+1))){
                                                 if(tablero_generacion_inicial[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
@@ -492,15 +511,15 @@ crear_tabla_n <- function(){
         return(grid_gen_n)
 }
 
-crear_tabla_n()
-tablero_generacion_1 <- crear_tabla_n()
+crear_tabla_n(vecindario)
+tablero_generacion_1 <- crear_tabla_n(vecindario)
 quieres_mas_generaciones <- ""
 while(quieres_mas_generaciones == ""){
         quieres_mas_generaciones <- readline("Pulse enter si quiere avanzar a la siguiente generación. Pulse otro caracter en caso contrario ")
         if(quieres_mas_generaciones == ""){
                 contador_generacion <- contador_generacion + 1
-                tablero_generacion_inicial <- crear_tabla_n()
-                crear_tabla_n()
+                tablero_generacion_inicial <- crear_tabla_n(vecindario)
+                crear_tabla_n(vecindario)
         } else {
                 if(contador_generacion == 1){
                         par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
@@ -520,4 +539,5 @@ while(quieres_mas_generaciones == ""){
 }
 
 }
+
 
