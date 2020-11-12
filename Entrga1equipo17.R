@@ -439,8 +439,8 @@ crear_tabla_n <- function(){
                                 neighbour <- 0
                                 # Iteramos entre el máximo entre 1 y la fila i-1, y el mínimo entre el número de filas y i + 1
                                 # Esto nos permite que nuestro bucle no salga del tablero
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                for(i2 in max(1,(i-2)):min(filas,(i+2))){
+                                        for(l2 in max(1,(l-2)):min(columnas,(l+2))){
                                                 # Regla de reproducción
                                                 if(tablero_generacion_inicial[i2, l2] == "X"){
                                                         neighbour <- neighbour + 1
@@ -458,8 +458,8 @@ crear_tabla_n <- function(){
                                 # el bucle la contará como vecina de sí misma
                                 # Entonces si inicializamos en -1 compensamos y conseguimos el número real de vecinos a su alrededor
                                 neighbour <- -1
-                                for(i2 in max(1,(i-1)):min(filas,(i+1))){
-                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                for(i2 in max(1,(i-2)):min(filas,(i+2))){
+                                        for(l2 in max(1,(l-2)):min(columnas,(l+2))){
                                                 if(tablero_generacion_inicial[i2,l2] == "X"){
                                                         neighbour <- neighbour + 1
                                                         #Regla de supervivencia
