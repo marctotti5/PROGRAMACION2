@@ -3,6 +3,10 @@
 # Para ejecutar al programa basta con pulsar en Run desde esta linea o posterior.
 
 {
+presentar_tablero <- function(tablero_a_mostrar){
+        View(tablero_a_mostrar)
+}
+
 game_set_up <- function(){
         
         # Inserción del número de filas del tablero
@@ -80,30 +84,32 @@ game_set_up <- function(){
         tipo_insercion <- readline("
 ¿Como desea introducir las células vivas?: 
 Escriba 1 para MANUAL
-Escriba 2 para AUTOMÁTICO ")
+Escriba 2 para AUTOMÁTICO 
+Escriba 3 para GRÁFICAMENTE")
         
-        if(grepl("^[1-2]+$", tipo_insercion)){
-                entre_uno_dos <- TRUE
+        if(grepl("^[1-3]+$", tipo_insercion)){
+                entre_uno_tres <- TRUE
                 tipo_insercion <- as.integer(tipo_insercion)
         } else{
-                entre_uno_dos <- FALSE
+                entre_uno_tres <- FALSE
         }
         
         # Bucle en caso de que el valor introducido no sea 1 o 2
-        while(entre_uno_dos == FALSE){
+        while(entre_uno_tres == FALSE){
                 
                 print("El valor debe ser 1 o 2")
                 tipo_insercion <- readline("
 Vuelva a intentarlo. 
 ¿Como desea introducir las células vivas?: 
 Escriba 1 para MANUAL
-Escriba 2 para AUTOMÁTICO ")
+Escriba 2 para AUTOMÁTICO 
+Escriba 3 para GRÁFICAMENTE")
                 
-                if(grepl("^[1-2]+$", tipo_insercion)){
-                        entre_uno_dos <- TRUE
+                if(grepl("^[1-3]+$", tipo_insercion)){
+                        entre_uno_tres <- TRUE
                         tipo_insercion <- as.integer(tipo_insercion)
                 } else {
-                        entre_uno_dos <- FALSE
+                        entre_uno_tres <- FALSE
                 }
         }
         
@@ -313,17 +319,17 @@ Inserte exactamente 2 coordenadas numéricas separadas por una coma.  ")
                                         if(option == 1){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == ""){
                                                         grid_gen_0[coordenadas[1], coordenadas[2]] <- "X"
-                                                        View(grid_gen_0)
+                                                        presentar_tablero(grid_gen_0)
                                                 } else {
-                                                        View(grid_gen_0)
+                                                        presentar_tablero(grid_gen_0)
                                                         print("Esta célula ya está viva")
                                                 } 
                                         } else if(option == 2){
                                                 if(grid_gen_0[coordenadas[1], coordenadas[2]] == "X"){
                                                         grid_gen_0[coordenadas[1], coordenadas[2]] <- ""
-                                                        View(grid_gen_0)
+                                                        presentar_tablero(grid_gen_0)
                                                 } else {
-                                                        View(grid_gen_0)
+                                                        presentar_tablero(grid_gen_0)
                                                         print("Esta célula ya está muerta")
                                                 }
                                         }
@@ -396,11 +402,18 @@ Seleccione el número de células vivas que quiere introducir por favor ")
                                 for(i in 1:cells){
                                         grid_gen_0[fila_aleatoria[i], columna_aleatoria[i]] <- "X"
                                 }
-                                View(grid_gen_0)
+                                presentar_tablero(grid_gen_0)
                         } else {
-                                View(grid_gen_0)
+                                presentar_tablero(grid_gen_0)
                                 print("No ha insertado ninguna célula viva")
                         }
+                }
+        } else if(tipo_insercion == 3){
+                print("Inserta X en las células que quieres que estén vivas")
+                grid_gen_0 <- edit(grid_gen_0)
+                while(!all(grid_gen_0 == "X" | grid_gen_0 == "")){
+                        print("El tablero solo puede contener celdas vacías y celdas ocupadas")
+                        grid_gen_0 <- edit(grid_gen_0)
                 }
         }
         return(grid_gen_0)
@@ -410,8 +423,8 @@ tablero_generacion_inicial <- game_set_up()
 contador_generacion <- 1
 
 crear_tabla_n <- function(){
-        # Imprimimos la tabla de la generación 0 en View
-        View(tablero_generacion_inicial)
+        # Imprimimos la tabla de la generación 0 en presentar_tablero
+        presentar_tablero(tablero_generacion_inicial)
         filas <- nrow(tablero_generacion_inicial)
         columnas <- ncol(tablero_generacion_inicial)
         grid_gen_n <- matrix(data = tablero_generacion_inicial, nrow = filas, ncol = columnas)
@@ -472,10 +485,10 @@ crear_tabla_n <- function(){
                         }
                 } 
         }
-        View(grid_gen_n)
+        presentar_tablero(grid_gen_n)
         par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
         plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
-        text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
+        text(0, 0, labels = paste("Generación", contador_generacion) , cex = 3)
         return(grid_gen_n)
 }
 
@@ -492,12 +505,14 @@ while(quieres_mas_generaciones == ""){
                 if(contador_generacion == 1){
                         par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
                         plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
-                        text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
+                        text(0, 0, labels = paste("Generación", contador_generacion) , cex = 3)
                         tablero_generacion_1
                 } else {
-                        par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+                        par(mfrow = c(2,1), mar=c(0, 0, 0, 0), oma = c(11, 1, 11, 1))
                         plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
-                        text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
+                        text(0, 0, labels = paste("Generación", contador_generacion) , cex = 3)
+                        plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
+                        text(0, 0, labels = "Juego Finalizado", cex = 1.5, col = "red")
                         tablero_generacion_inicial
                 }
         }
@@ -505,3 +520,4 @@ while(quieres_mas_generaciones == ""){
 }
 
 }
+
