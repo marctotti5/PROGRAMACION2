@@ -480,7 +480,7 @@ crear_tabla_n <- function(){
 }
 
 crear_tabla_n()
-tablero_generacion_inicial <- crear_tabla_n()
+tablero_generacion_1 <- crear_tabla_n()
 quieres_mas_generaciones <- ""
 while(quieres_mas_generaciones == ""){
         quieres_mas_generaciones <- readline("Pulse enter si quiere avanzar a la siguiente generación. Pulse otro caracter en caso contrario ")
@@ -489,10 +489,17 @@ while(quieres_mas_generaciones == ""){
                 tablero_generacion_inicial <- crear_tabla_n()
                 crear_tabla_n()
         } else {
-                par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
-                plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
-                text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
-                tablero_generacion_inicial
+                if(contador_generacion == 1){
+                        par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+                        plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
+                        text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
+                        tablero_generacion_1
+                } else {
+                        par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
+                        plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
+                        text(0, 0, labels = paste("Generacion", contador_generacion) , cex = 3)
+                        tablero_generacion_inicial
+                }
         }
 
 }
