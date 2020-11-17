@@ -1,7 +1,7 @@
 
 
 # Para ejecutar al programa basta con pulsar en Run desde esta linea o posterior.
-
+# LINEA 414: FALTA FER QUE ENS DONI UN ERROR QUAN INSERTEM UNA CELULA VIVA FORA DE LA DIMENSIO DE LA MATRIU 
 {
 presentar_tablero <- function(tablero_a_mostrar){
         View(tablero_a_mostrar)
@@ -411,12 +411,43 @@ Seleccione el número de células vivas que quiere introducir por favor ")
         } else if(tipo_insercion == 3){
                 print("Inserta X en las células que quieres que estén vivas")
                 grid_gen_0 <- edit(grid_gen_0)
+                # FALTA: FER QUE ENS DONI UN ERROR QUAN INSERTEM UNA CELULA VIVA FORA DE LA DIMENSIO DE LA MATRIU
                 while(!all(grid_gen_0 == "X" | grid_gen_0 == "")){
                         print("El tablero solo puede contener celdas vacías y celdas ocupadas")
                         grid_gen_0 <- edit(grid_gen_0)
                 }
         }
+        
+        entre_uno_dos <- FALSE
+        while(entre_uno_dos == FALSE){
+                opcion_inhabitables <- readline("
+¿Quieres tener casillas inhabitables? 
+1- Si
+2- No")
+                
+                if(grepl("^[1-2]+$", opcion_inhabitables)){
+                        entre_uno_dos <- TRUE
+                        opcion_inhabitables <- as.integer(opcion_inhabitables)
+                        if(opcion_inhabitables == 1){
+                                print("Inserta I en las casillas que quieres que sean inhabitables")
+                                grid_gen_0 <- edit(grid_gen_0)
+                                while(!all(grid_gen_0 == "X" | grid_gen_0 == "" | grid_gen_0 == "I")){
+                                        print("El tablero solo puede contener celdas vacías () , ocupadas (X) e inhabitables (I)")
+                                        grid_gen_0 <- edit(grid_gen_0)
+                                }
+                                return(grid_gen_0)
+                                
+                        } else {
+                                return(grid_gen_0)
+                        }
+                } else {
+                        entre_uno_dos <- FALSE
+                        print("El número a introducir debe ser 1 o 2, Probemos otra vez")
+                        
+                }
+        }
         return(grid_gen_0)
+        
 }
 
 tablero_generacion_inicial <- game_set_up()
@@ -441,6 +472,26 @@ Escoja la variante del juego que quiere usar
 }
 
 crear_tabla_n <- function(vecindario){
+        
+        # Obtenemos coordenadas de las células inhabitables
+        coordenada_filas_inhabitable <- rep(NA, nrow(tablero_generacion_inicial))
+        coordenada_columnas_inhabitable <- rep(NA, ncol(tablero_generacion_inicial))
+        l <- 1
+        k <- 1
+        for(j in 1:ncol(tablero_generacion_inicial)){
+                for(i in 1:nrow(tablero_generacion_inicial)){
+                        if(tablero_generacion_inicial[i, j] == "I"){
+                                coordenada_filas_inhabitable[l] <- i
+                                coordenada_columnas_inhabitable[l] <- j
+                                l <- l + 1
+                                k <- k + 1
+                                tablero_generacion_inicial[i, j] <- ""
+                        }
+                }
+        }
+        
+        coordenadas_inhabitables <- as.data.frame(cbind(coordenada_filas_inhabitable, coordenada_columnas_inhabitable))
+        coordenadas_inhabitables <- coordenadas_inhabitables[complete.cases(coordenadas_inhabitables), ]
         
         # Imprimimos la tabla de la generación 0 en presentar_tablero
         presentar_tablero(tablero_generacion_inicial)
@@ -504,6 +555,9 @@ crear_tabla_n <- function(vecindario){
                         }
                 } 
         }
+        for(i in 1:nrow(coordenadas_inhabitables)){
+                grid_gen_n[coordenadas_inhabitables[i, 1], coordenadas_inhabitables[i, 2]] <- "Inhabitable"
+        }
         presentar_tablero(grid_gen_n)
         par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
         plot(0, 0, type = "n", xlim = c(-0.25, 0.25), ylim = c(-0.25, 0.25), xaxt = "n", yaxt = "n", ann = FALSE, frame.plot = FALSE)
@@ -539,5 +593,8 @@ while(quieres_mas_generaciones == ""){
 }
 
 }
+
+# LINEA 414: FALTA FER QUE ENS DONI UN ERROR QUAN INSERTEM UNA CELULA VIVA FORA DE LA DIMENSIO DE LA MATRIU 
+
 
 
