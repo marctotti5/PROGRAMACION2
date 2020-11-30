@@ -1,7 +1,7 @@
 
 
 # Para ejecutar al programa basta con pulsar en Run desde esta linea o posterior.
-
+{
 game_of_life <- function(){
         {
                 presentar_tablero <- function(tablero_a_mostrar){
@@ -594,9 +594,8 @@ Escoja la variante del juego que quiere usar
                 
         }
 }
-
 game_of_life()
- 
+}
 
 
 
