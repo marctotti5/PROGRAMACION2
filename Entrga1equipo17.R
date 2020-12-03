@@ -408,8 +408,8 @@ Seleccione el número de células vivas que quiere introducir por favor ")
                                 }
                                 if(entero == TRUE & cells_menor_que_dimension == TRUE){
                                         if(cells != 0){
-                                                fila_aleatoria <- sample(1:nrow(grid_gen_0), size = cells, replace = FALSE)
-                                                columna_aleatoria <- sample(1:ncol(grid_gen_0), size = cells, replace = FALSE)
+                                                fila_aleatoria <- sample(1:nrow(grid_gen_0), size = cells, replace = TRUE)
+                                                columna_aleatoria <- sample(1:ncol(grid_gen_0), size = cells, replace = TRUE)
                                                 for(i in 1:cells){
                                                         grid_gen_0[fila_aleatoria[i], columna_aleatoria[i]] <- "X"
                                                 }
@@ -502,7 +502,7 @@ Seleccione el número de células vivas que quiere introducir por favor ")
                                 opcion_inhabitables <- readline("
 ¿Quieres tener casillas inhabitables? 
 1- Si
-2- No")
+2- No ")
                                 
                                 if(grepl("^[1-2]+$", opcion_inhabitables)){
                                         entre_uno_dos <- TRUE
@@ -510,15 +510,78 @@ Seleccione el número de células vivas que quiere introducir por favor ")
                                         if(opcion_inhabitables == 1){
                                                 print("Inserta I en las casillas que quieres que sean inhabitables")
                                                 grid_gen_0 <- edit(grid_gen_0)
-                                                while(!all(grid_gen_0 == "X" | grid_gen_0 == "" | grid_gen_0 == "I")){
-                                                        print("El tablero solo puede contener celdas vacías () , ocupadas (X) e inhabitables (I)")
-                                                        grid_gen_0 <- edit(grid_gen_0)
-                                                }
-                                                return(grid_gen_0)
+                                                escritura_correcta <- 0
+                                                dimension_correcta <- 0
                                                 
-                                        } else {
-                                                return(grid_gen_0)
-                                        }
+                                                if(nrow(grid_gen_0) > filas | ncol(grid_gen_0) > columnas){
+                                                        dimension_correcta <- FALSE
+                                                        
+                                                } else {
+                                                        dimension_correcta <- TRUE
+                                                        if(all(grid_gen_0 == "X" | grid_gen_0 == "" | grid_gen_0 == "I")){
+                                                                escritura_correcta <- TRUE
+                                                                print(grid_gen_0)
+                                                        } else {
+                                                                escritura_correcta <- FALSE
+                                                                # eliminamos el carácter que ha escrito mal
+                                                                for(i in 1:nrow(grid_gen_0)){
+                                                                        for(j in 1:ncol(grid_gen_0)){
+                                                                                if(grid_gen_0[i, j] != "X" & grid_gen_0[i, j] != "" & grid_gen_0[i, j] != "I"){
+                                                                                        grid_gen_0[i, j] <- ""
+                                                                                }
+                                                                        }
+                                                                }
+                                                        }
+                                                }
+                                                while(dimension_correcta == FALSE | escritura_correcta == FALSE){
+                                                        grid_gen_0 <- grid_gen_0[c(1:filas), c(1:columnas)]
+                                                        # En el caso de que entre en el bucle, significa que el número de filas o de columnas del tablero es mayor que el del inicial,
+                                                        # ya que edit guarda los datos en una matriz. 
+                                                        # Filtramos el tablero inicial para que solo aparezcan datos dentro de la dimensión del tablero inicial
+                                                        # Si no hacemos este paso, corremos el riesgo de que las dimensiones del grid_gen0 sean siempre incorrectas, lo que nos llevaría a un bucle infinito
+                                                        if(dimension_correcta == FALSE){
+                                                                if(escritura_correcta == FALSE){
+                                                                        print("Ha introducido datos fuera de la dimensión del tablero y además ha introducido caracteres incorrectos.")
+                                                                        print("Inserta X en las células que quieres que estén vivas")
+                                                                } else {
+                                                                        print("Ha introducido datos fuera de la dimensión del tablero.")
+                                                                        print("Inserta X en las células que quieres que estén vivas")
+                                                                }
+                                                        } else {
+                                                                if(escritura_correcta == FALSE){
+                                                                        print("Ha introducido caracteres incorrectos. ")
+                                                                        print("Introduzca X en las casillas vivas y no introduzca nada en las demás.")
+                                                                } 
+                                                        }
+                                                        
+                                                        grid_gen_0 <- edit(grid_gen_0)
+                                                        escritura_correcta <- 0
+                                                        dimension_correcta <- 0
+                                                        if(nrow(grid_gen_0) > filas | ncol(grid_gen_0) > columnas){
+                                                                dimension_correcta <- FALSE
+                                                        } else {
+                                                                dimension_correcta <- TRUE
+                                                                if(all(grid_gen_0 == "X" | grid_gen_0 == "" | grid_gen_0 == "I")){
+                                                                        escritura_correcta <- TRUE
+                                                                        print(grid_gen_0)
+                                                                } else {
+                                                                        escritura_correcta <- FALSE
+                                                                        # eliminamos el carácter que ha escrito mal
+                                                                        for(i in 1:nrow(grid_gen_0)){
+                                                                                for(j in 1:ncol(grid_gen_0)){
+                                                                                        if(grid_gen_0[i, j] != "X" & grid_gen_0[i, j] != "" & grid_gen_0[i, j] != "I"){
+                                                                                                grid_gen_0[i, j] <- ""
+                                                                                        }
+                                                                                }
+                                                                        }
+                                                                        # Corrijo la escritura aunque escritura_correcta == TRUE para evitarme que lo haga
+                                                                        
+                                                                        
+                                                                }
+                                                        }
+                                                        
+                                                }
+                                        } 
                                 } else {
                                         entre_uno_dos <- FALSE
                                         print("El número a introducir debe ser 1 o 2, Probemos otra vez")
@@ -538,7 +601,7 @@ Seleccione el número de células vivas que quiere introducir por favor ")
                         vecindario <- readline("
 Escoja la variante del juego que quiere usar 
 1- VECINDARIO NORMAL
-2- VECINDARIO EXTENDIDO")
+2- VECINDARIO EXTENDIDO ")
                         
                         if(grepl("^[1-2]+$", vecindario)){
                                 entre_uno_dos <- TRUE
