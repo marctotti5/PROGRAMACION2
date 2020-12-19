@@ -647,7 +647,7 @@ Escoja la variante del juego que quiere usar
                                                 # Iteramos entre el máximo entre 1 y la fila i-1, y el mínimo entre el número de filas y i + 1
                                                 # Esto nos permite que nuestro bucle no salga del tablero
                                                 for(i2 in max(1,(i-vecindario)):min(filas,(i+vecindario))){
-                                                        for(l2 in max(1,(l-2)):min(columnas,(l+2))){
+                                                        for(l2 in max(1,(l-vecindario)):min(columnas,(l+vecindario))){
                                                                 # Regla de reproducción
                                                                 if(tablero_generacion_inicial[i2, l2] == "X"){
                                                                         neighbour <- neighbour + 1
@@ -666,7 +666,7 @@ Escoja la variante del juego que quiere usar
                                                 # Entonces si inicializamos en -1 compensamos y conseguimos el número real de vecinos a su alrededor
                                                 neighbour <- -1
                                                 for(i2 in max(1,(i-vecindario)):min(filas,(i+vecindario))){
-                                                        for(l2 in max(1,(l-1)):min(columnas,(l+1))){
+                                                        for(l2 in max(1,(l-vecindario)):min(columnas,(l+vecindario))){
                                                                 if(tablero_generacion_inicial[i2,l2] == "X"){
                                                                         neighbour <- neighbour + 1
                                                                         #Regla de supervivencia
@@ -702,7 +702,6 @@ Escoja la variante del juego que quiere usar
                         return(grid_gen_n)
                 }
                 
-                crear_tabla_n(vecindario)
                 tablero_generacion_1 <- crear_tabla_n(vecindario)
                 quieres_mas_generaciones <- ""
                 while(quieres_mas_generaciones == ""){
@@ -710,7 +709,6 @@ Escoja la variante del juego que quiere usar
                         if(quieres_mas_generaciones == ""){
                                 contador_generacion <- contador_generacion + 1
                                 tablero_generacion_inicial <- crear_tabla_n(vecindario)
-                                crear_tabla_n(vecindario)
                         } else {
                                 if(contador_generacion == 1){
                                         par(mfrow = c(1,1), mar=c(0, 0, 0, 0), oma = c(1, 1, 1, 1))
